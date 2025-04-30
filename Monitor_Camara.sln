@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35303.130
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitor_Camara", "Monitor_Camara.csproj", "{A2EFBA6A-85D5-4CFC-8278-3D5E4F344310}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2EFBA6A-85D5-4CFC-8278-3D5E4F344310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2EFBA6A-85D5-4CFC-8278-3D5E4F344310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2EFBA6A-85D5-4CFC-8278-3D5E4F344310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2EFBA6A-85D5-4CFC-8278-3D5E4F344310}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C6B859B2-C068-4212-8C3F-9815C9DA169E}
+	EndGlobalSection
+EndGlobal
