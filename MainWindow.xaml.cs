@@ -24,38 +24,11 @@ namespace Monitor_Camara
 
     public partial class MainWindow : Window
     {
-        private BGS_Modbus_RTU485_Client BGS_Modbus_RTU485_Client;
-        private IModbusSerialMaster master;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // Cria o serviço Modbus e inicia
-                BGS_Modbus_RTU485_Client = new BGS_Modbus_RTU485_Client("COM5",9600,Parity.None,StopBits.One,500,500); // Slave ID = 1
-                BGS_Modbus_RTU485_Client.Start();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao iniciar comunicação Modbus: {ex.Message}");
-            }
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            try
-            {
-                BGS_Modbus_RTU485_Client?.Stop();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao parar serviço Modbus: {ex.Message}");
-            }
-        }
     }
 }
