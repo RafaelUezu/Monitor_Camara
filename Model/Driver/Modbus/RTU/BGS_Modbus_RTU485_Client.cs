@@ -8,6 +8,7 @@ using System.IO.Ports;
 using Modbus.Device; // Biblioteca NModbus4
 using System.Diagnostics;
 using System.Reflection;
+using Monitor_Camara.ViewModel.Variaveis;
 
 namespace Monitor_Camara.Model.Driver.Modbus.RTU
 {
@@ -28,6 +29,7 @@ namespace Monitor_Camara.Model.Driver.Modbus.RTU
         private byte _slaveId;
         private bool _Activated;
         private SerialPort _port;
+        private int[] _indexbaudRates = { 4800, 9600, 19200, 38400, 57600, 115200, 128000, 256000 };
         // Construtor com constantes
 
         public BGS_Modbus_RTU485_Client()
@@ -88,20 +90,93 @@ namespace Monitor_Camara.Model.Driver.Modbus.RTU
             }
         }
 
-        private void Leitura()
+
+        public class Return_Read_8DI8DQ()
+        {
+            public bool ?result_Status { get; set; }
+            public ushort ? result_ReadTimeout { get; set; }
+            public ushort ?result_baudrate { get; set; }
+            public ushort ?result_Address { get; set; }
+            public ushort ?result_softwareversion { get; set; }
+            public bool[] ?result_coils { get; set; }
+            public bool[] ?result_input { get; set; }
+        }
+
+        public class Return_Read_8AI()
+        {
+            public bool? result_Status { get; set; }
+            public ushort? result_ReadTimeout { get; set; }
+            public ushort? result_baudrate { get; set; }
+            public ushort? result_Address { get; set; }
+            public ushort? result_softwareversion { get; set; }
+            public ushort[]? result_analoginput { get; set; }
+            public ushort[]? result_typechannel { get; set; }
+
+        }
+
+        private Return_Read_8AI Read_8AI(byte SlaveId)
+        {
+            try
+            {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                ushort[] baudrate = _master.ReadHoldingRegisters(SlaveId, 8192, 1);
+                int selectedBaudRate = _indexbaudRates[baudrate[0]];
+
+                ushort[] Address = _master.ReadHoldingRegisters(SlaveId, 16384, 1);
+                ushort[] softwareversion = _master.ReadHoldingRegisters(SlaveId, 32768, 1);
+
+                ushort[] InputRegisters = _master.ReadInputRegisters(SlaveId, 0, 8);
+                ushort[] ReadType = _master.ReadHoldingRegisters(SlaveId, 4096, 8);
+
+                for (ushort i = 0; i < InputRegisters.Length; i++)
+                {
+                    System.Diagnostics.Debug.WriteLine("Registro de Entrada " + i + "; Valor: " + InputRegisters[i] + "; Tipo de Leitura: " + ReadType[i]);
+                }
+                stopwatch.Stop();
+                System.Diagnostics.Debug.WriteLine($"Tempo decorrido de leitura 8AI: {stopwatch.Elapsed + "-" + stopwatch.ElapsedMilliseconds} ms");
+
+                return new Return_Read_8AI
+                {
+                    result_Status = true,
+                    result_ReadTimeout = (ushort)stopwatch.ElapsedMilliseconds,
+                    result_baudrate = baudrate[0],
+                    result_Address = Address[0],
+                    result_softwareversion = softwareversion[0],
+                    result_analoginput = InputRegisters,
+                    result_typechannel = ReadType,
+                };
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine($"Erro na Leitura 8ch");
+                return new Return_Read_8AI
+                {
+                    result_Status = false,
+                    result_ReadTimeout = 0,
+                    result_baudrate = null,
+                    result_Address = null,
+                    result_softwareversion = null,
+                    result_analoginput = null,
+                    result_typechannel = null,
+                };
+            }
+        }
+
+        private Return_Read_8DI8DQ Read_8DI8DQ(byte SlaveId)
         {
             try
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                ushort[] baudrate = _master.ReadHoldingRegisters(1, 8192, 1); //0x00: 4800 0x01: 9600 0x02: 19200 0x03: 38400 0x04: 57600 0x05: 115200 0x06: 128000 0x07: 256000
-                int[] indexbaudRates = {4800, 9600, 19200, 38400, 57600, 115200, 128000, 256000};
-                int selectedBaudRate = indexbaudRates[baudrate[0]];
-                ushort[] softwareversion = _master.ReadHoldingRegisters(1, 32768, 1); 
-                ushort[] Address = _master.ReadHoldingRegisters(1, 16384, 1);
-                bool[] coils = _master.ReadCoils(1, 0, 8);
-                bool[] discreteinput = _master.ReadInputs(1, 0, 8);
+                ushort[] baudrate = _master.ReadHoldingRegisters(SlaveId, 8192, 1);
+                int selectedBaudRate = _indexbaudRates[baudrate[0]];
+                ushort[] Address = _master.ReadHoldingRegisters(SlaveId, 16384, 1);
+                ushort[] softwareversion = _master.ReadHoldingRegisters(SlaveId, 32768, 1); 
+
+                bool[] coils = _master.ReadCoils(SlaveId, 0, 8);
+                bool[] input = _master.ReadInputs(SlaveId, 0, 8);
 
                 System.Diagnostics.Debug.WriteLine($"Taxa de transmissão: {selectedBaudRate}");
                 System.Diagnostics.Debug.WriteLine($"Versão do software: {softwareversion[0]}");
@@ -110,63 +185,141 @@ namespace Monitor_Camara.Model.Driver.Modbus.RTU
                 {
                     System.Diagnostics.Debug.WriteLine($"Coil " + i + ":" + coils[i]);
                 }
-                for (int i = 0; i < discreteinput.Length; i++)
+                for (int i = 0; i < input.Length; i++)
                 {
-                    System.Diagnostics.Debug.WriteLine($"input " + i + ":" + discreteinput[i]);
+                    System.Diagnostics.Debug.WriteLine($"input " + i + ":" + input[i]);
                 }
                 stopwatch.Stop();
-                System.Diagnostics.Debug.WriteLine($"Tempo decorrido de leitura: {stopwatch.ElapsedMilliseconds} ms");
+                System.Diagnostics.Debug.WriteLine($"Tempo decorrido de leitura 8ch: {stopwatch.Elapsed + "-" + stopwatch.ElapsedMilliseconds} ms");
+
+                return new Return_Read_8DI8DQ
+                {
+                    result_Status = true,
+                    result_ReadTimeout = (ushort)stopwatch.ElapsedMilliseconds,
+                    result_baudrate = baudrate[0],
+                    result_Address = Address[0],
+                    result_softwareversion = softwareversion[0],
+                    result_coils = coils,
+                    result_input = input
+                };
             }
             catch
             {
-                System.Diagnostics.Debug.WriteLine($"Erro na Leitura");
+                System.Diagnostics.Debug.WriteLine($"Erro na Leitura 8ch");
+                return new Return_Read_8DI8DQ
+                {
+                    result_Status = false,
+                    result_ReadTimeout = 0,
+                    result_baudrate = null,
+                    result_Address = null,
+                    result_softwareversion = null,
+                    result_coils = null,
+                    result_input = null
+                };
             }
+        }
 
+        private void Set_8AI(Return_Read_8AI result_Read_8AI)
+        {
+            try
+            {
+                if (result_Read_8AI.result_Status == true)
+                {
+                    GVL.Modbus_RTU485.C1_AI8.Network.Read.uReadTimeout = result_Read_8AI.result_ReadTimeout;
+                    GVL.Modbus_RTU485.C1_AI8.Network.Read.uBaudRate = result_Read_8AI.result_baudrate;
+                    GVL.Modbus_RTU485.C1_AI8.Network.Read.uDeviceAddress = result_Read_8AI.result_Address;
+                    GVL.Modbus_RTU485.C1_AI8.Network.Read.uVersionSoftware = result_Read_8AI.result_softwareversion;
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        GVL.Modbus_RTU485.C1_AI8.AI.Read.Set_uAI(i, result_Read_8AI.result_analoginput[i]);
+                        GVL.Modbus_RTU485.C1_AI8.TypeChannel.Read.Set_uTypeChannel(i, result_Read_8AI.result_typechannel[i]);
+                    }
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Erro: A leitura 8ai não retornou valores");
+                    return;
+                }
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("Erro: Não foi possível atribuir os valores de 8ai nas variaveis globais");
+                return;
+            }
+}
+        private void Set_8DI8DQ(Return_Read_8DI8DQ result_Read_8DI8DQ)
+        {
+            try
+            {
+                if (result_Read_8DI8DQ.result_Status == true)
+                {
+                    GVL.Modbus_RTU485.C1_DI8DQ8.Network.Read.uReadTimeout = result_Read_8DI8DQ.result_ReadTimeout;
+                    GVL.Modbus_RTU485.C1_DI8DQ8.Network.Read.uBaudRate = result_Read_8DI8DQ.result_baudrate;
+                    GVL.Modbus_RTU485.C1_DI8DQ8.Network.Read.uDeviceAddress = result_Read_8DI8DQ.result_Address;
+                    GVL.Modbus_RTU485.C1_DI8DQ8.Network.Read.uVersionSoftware = result_Read_8DI8DQ.result_softwareversion;
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        GVL.Modbus_RTU485.C1_DI8DQ8.DI.Read.Set_xDI(i, result_Read_8DI8DQ.result_input[i]);
+                        GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Read.Set_xDQ(i, result_Read_8DI8DQ.result_coils[i]);
+                    }
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Erro: A leitura 8ch não retornou valores");
+                    return;
+                }
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("Erro: Não foi possível atribuir os valores de 8ch nas variaveis globais");
+                return;
+            }
         }
 
         // Tarefa que roda em background
-        
+
         public async Task Start(CancellationToken token)
         {
             try
             {
                 Cliente();
-
                 while (!token.IsCancellationRequested)
                 {
                     try
                     {
                         // Leitura Modbus aqui
-                        Leitura();
 
-                        await Task.Delay(1000, token); // Espera 1 segundo de forma assíncrona
+                        Return_Read_8DI8DQ result_Read_8DI8DQ = Read_8DI8DQ(1);
+                        Return_Read_8AI result_Read_8AI = Read_8AI(2);
 
+                        Set_8DI8DQ(result_Read_8DI8DQ);
+                        Set_8AI(result_Read_8AI);
+                        int Tempo_de_Leitura = (int)result_Read_8DI8DQ.result_ReadTimeout + (int)result_Read_8AI.result_ReadTimeout;
+                        await Task.Delay(1000 - Tempo_de_Leitura, token); // Espera 1 segundo de forma
+                        System.Diagnostics.Debug.WriteLine("Sucesso na leitura, escrita, atribuição ou normalização de BGS_Modbus_RTU485_Client: " + Tempo_de_Leitura);
                     }
                     catch (OperationCanceledException)
                     {
-                        // Ignora - é esperado ao cancelar
+                        System.Diagnostics.Debug.WriteLine("Erro na leitura, escrita, atribuição ou normalização de BGS_Modbus_RTU485_Client");
                     }
                 }
             }
             catch (TaskCanceledException)
             {
                 // Normal quando o token é cancelado
-                Console.WriteLine("A_C_M cancelado por requisição.");
+                System.Diagnostics.Debug.WriteLine("BGS_Modbus_RTU485_Client cancelado por requisição.");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro em A_C_M: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Erro em BGS_Modbus_RTU485_Client: {ex.Message}");
             }
             finally
             {
-                Console.WriteLine("A_C_M finalizado com sucesso.");
+                System.Diagnostics.Debug.WriteLine("BGS_Modbus_RTU485_Client finalizado com sucesso.");
             }
         }
-        public void Read_8DI8DQ_1(byte slaveId) 
-        {
-            _slaveId = slaveId;
-            ushort[] registers = _master.ReadHoldingRegisters(slaveId, 8192, 1);
 
-        }
     }
 }

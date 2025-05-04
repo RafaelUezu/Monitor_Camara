@@ -4,6 +4,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Windows;
 using System.IO.Ports;
+using Monitor_Camara.Model.Regras.fit;
 
 namespace Monitor_Camara
 {
@@ -19,6 +20,9 @@ namespace Monitor_Camara
             base.OnStartup(e);
 
             _cts = new CancellationTokenSource();
+
+           
+
 
             // Inicia as tarefas de A e B
             _task_BGS_Modbus_RTU485_Client = Task.Run(() => new BGS_Modbus_RTU485_Client("COM5",9600,Parity.None,StopBits.One,500,500).Start(_cts.Token));

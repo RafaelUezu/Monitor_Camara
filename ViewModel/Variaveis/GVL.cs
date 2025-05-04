@@ -402,8 +402,8 @@ namespace Monitor_Camara.ViewModel.Variaveis
                     public class Read
                     {
                         private static object lockObjectFor_uVersionSoftware = new object();
-                        private static ushort? _uVersionSoftware;
-                        public static ushort? uVersionSoftware
+                        private static long? _uVersionSoftware;
+                        public static long? uVersionSoftware
                         {
                             get
                             {
@@ -417,6 +417,25 @@ namespace Monitor_Camara.ViewModel.Variaveis
                                 lock (lockObjectFor_uVersionSoftware)
                                 {
                                     _uVersionSoftware = value;
+                                }
+                            }
+                        }
+                        private static object lockObjectFor_uReadTimeout = new object();
+                        private static ushort? _uReadTimeout;
+                        public static ushort? uReadTimeout
+                        {
+                            get
+                            {
+                                lock (lockObjectFor_uReadTimeout)
+                                {
+                                    return _uReadTimeout;
+                                }
+                            }
+                            set
+                            {
+                                lock (lockObjectFor_uReadTimeout)
+                                {
+                                    _uReadTimeout = value;
                                 }
                             }
                         }
@@ -505,8 +524,8 @@ namespace Monitor_Camara.ViewModel.Variaveis
                 {
                     public class Read
                     {
-                        private static object lockObjectFor_xDI = new object();
-                        private static bool?[] _xDI = new bool?[8];
+                        public static object lockObjectFor_xDI = new object();
+                        public static bool?[] _xDI = new bool?[8];
 
                         public static bool? Get_xDI(int index)
                         {
@@ -568,8 +587,197 @@ namespace Monitor_Camara.ViewModel.Variaveis
                     }
                 }
             }
+
             public class C1_AI8
             {
+                public class Network
+                {
+                    public class Read
+                    {
+                        private static object lockObjectFor_uVersionSoftware = new object();
+                        private static long? _uVersionSoftware;
+                        public static long? uVersionSoftware
+                        {
+                            get
+                            {
+                                lock (lockObjectFor_uVersionSoftware)
+                                {
+                                    return _uVersionSoftware;
+                                }
+                            }
+                            set
+                            {
+                                lock (lockObjectFor_uVersionSoftware)
+                                {
+                                    _uVersionSoftware = value;
+                                }
+                            }
+                        }
+                        private static object lockObjectFor_uReadTimeout = new object();
+                        private static ushort? _uReadTimeout;
+                        public static ushort? uReadTimeout
+                        {
+                            get
+                            {
+                                lock (lockObjectFor_uReadTimeout)
+                                {
+                                    return _uReadTimeout;
+                                }
+                            }
+                            set
+                            {
+                                lock (lockObjectFor_uReadTimeout)
+                                {
+                                    _uReadTimeout = value;
+                                }
+                            }
+                        }
+                        private static object lockObjectFor_uDeviceAddress = new object();
+                        private static ushort? _uDeviceAddress;
+                        public static ushort? uDeviceAddress
+                        {
+                            get
+                            {
+                                lock (lockObjectFor_uDeviceAddress)
+                                {
+                                    return _uDeviceAddress;
+                                }
+                            }
+                            set
+                            {
+                                lock (lockObjectFor_uDeviceAddress)
+                                {
+                                    _uDeviceAddress = value;
+                                }
+                            }
+                        }
+                        private static object lockObjectFor_uBaudRate = new object();
+                        private static ushort? _uBaudRate;
+                        public static ushort? uBaudRate
+                        {
+                            get
+                            {
+                                lock (lockObjectFor_uBaudRate)
+                                {
+                                    return _uBaudRate;
+                                }
+                            }
+                            set
+                            {
+                                lock (lockObjectFor_uBaudRate)
+                                {
+                                    _uBaudRate = value;
+                                }
+                            }
+                        }
+                    }
+                    public class Write
+                    {
+                        private static object lockObjectFor_uDeviceAddress = new object();
+                        private static ushort? _uDeviceAddress;
+                        public static ushort? uDeviceAddress
+                        {
+                            get
+                            {
+                                lock (lockObjectFor_uDeviceAddress)
+                                {
+                                    return _uDeviceAddress;
+                                }
+                            }
+                            set
+                            {
+                                lock (lockObjectFor_uDeviceAddress)
+                                {
+                                    _uDeviceAddress = value;
+                                }
+                            }
+                        }
+                        private static object lockObjectFor_uBaudRate = new object();
+                        private static ushort? _uBaudRate;
+                        public static ushort? uBaudRate
+                        {
+                            get
+                            {
+                                lock (lockObjectFor_uBaudRate)
+                                {
+                                    return _uBaudRate;
+                                }
+                            }
+                            set
+                            {
+                                lock (lockObjectFor_uBaudRate)
+                                {
+                                    _uBaudRate = value;
+                                }
+                            }
+                        }
+                    }
+                }
+                public class AI
+                {
+                    public class Read
+                    {
+                        public static object lockObjectFor_uAI = new object();
+                        public static ushort?[] _uAI = new ushort?[8];
+                        public static ushort? Get_uAI(int index)
+                        {
+                            lock (lockObjectFor_uAI)
+                            {
+                                return _uAI[index];
+                            }
+                        }
+                        public static void Set_uAI(int index, ushort? value)
+                        {
+                            lock (lockObjectFor_uAI)
+                            {
+                                _uAI[index] = value;
+                            }
+                        }
+                    }
+                }
+                public class TypeChannel
+                {
+                    public class Read 
+                    {
+                        private static object lockObjectFor_uTypeChannel = new object();
+                        private static ushort?[] _uTypeChannel = new ushort?[8];
+
+                        public static ushort? Get_uTypeChannel(int index)
+                        {
+                            lock (lockObjectFor_uTypeChannel)
+                            {
+                                return _uTypeChannel[index];
+                            }
+                        }
+                        public static void Set_uTypeChannel(int index, ushort? value)
+                        {
+                            lock (lockObjectFor_uTypeChannel)
+                            {
+                                _uTypeChannel[index] = value;
+                            }
+                        }
+                    }
+                    public class Write
+                    {
+                        private static object lockObjectFor_uTypeChannel = new object();
+                        private static ushort?[] _uTypeChannel = new ushort?[8];
+
+                        public static ushort? Get_uTypeChannel(int index)
+                        {
+                            lock (lockObjectFor_uTypeChannel)
+                            {
+                                return _uTypeChannel[index];
+                            }
+                        }
+                        public static void Set_uTypeChannel(int index, ushort? value)
+                        {
+                            lock (lockObjectFor_uTypeChannel)
+                            {
+                                _uTypeChannel[index] = value;
+                            }
+                        }
+                    }
+                }
             }
         }
         
