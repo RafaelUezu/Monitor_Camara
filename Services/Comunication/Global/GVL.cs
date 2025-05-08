@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Monitor_Camara.ViewModel.Variaveis
+namespace Monitor_Camara.Service.Comunication.Global
 {
     public class GVL
     {

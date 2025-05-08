@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics;
 
-namespace Monitor_Camara.Model.Regras.fit
+namespace Monitor_Camara.Utilities.Fucoes.fit
 {
     public class fit
     {

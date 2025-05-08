@@ -8,9 +8,9 @@ using System.IO.Ports;
 using Modbus.Device; // Biblioteca NModbus4
 using System.Diagnostics;
 using System.Reflection;
-using Monitor_Camara.ViewModel.Variaveis;
+using Monitor_Camara.Service.Comunication.Global;
 
-namespace Monitor_Camara.Model.Driver.Modbus.RTU
+namespace Monitor_Camara.Services.Driver.Modbus.RTU
 {
     public class BGS_Modbus_RTU485_Client
     {

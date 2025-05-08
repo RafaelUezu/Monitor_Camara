@@ -16,7 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="View\" />
+    <Folder Include="Model\" />
+    <Folder Include="Resources\Fonts\" />
+    <Folder Include="Services\DataBase\" />
+    <Folder Include="Utilities\Conversores\" />
+    <Folder Include="ViewModel\" />
+    <Folder Include="View\UserControls\" />
+    <Folder Include="View\Pages\" />
+    <Folder Include="View\Windows\" />
   </ItemGroup>
 
 </Project>
