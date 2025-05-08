@@ -23,18 +23,15 @@ namespace Monitor_Camara.Commands
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NavButton), new FrameworkPropertyMetadata(typeof(NavButton)));
         }
 
-
+        public static readonly DependencyProperty ImageSourceProperty   = DependencyProperty.Register("ImageSource",    typeof(ImageSource),    typeof(NavButton),  new PropertyMetadata(null));
+        public static readonly DependencyProperty TextProperty          = DependencyProperty.Register("Text",           typeof(string),         typeof(NavButton),  new PropertyMetadata(null));
+        public static readonly DependencyProperty NavUriProperty        = DependencyProperty.Register("NavUri",         typeof(Uri),            typeof(NavButton),  new PropertyMetadata(null));
 
         public ImageSource ImageSource
         {
             get { return (ImageSource)GetValue(ImageSourceProperty); }
             set { SetValue(ImageSourceProperty, value); }
         }
-        // Using a DependencyProperty as the backing store for ImageSource.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ImageSourceProperty =
-            DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(NavButton), new PropertyMetadata(null));
-
-
 
         public string Text
         {
@@ -42,14 +39,11 @@ namespace Monitor_Camara.Commands
             set { SetValue(TextProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Text.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(NavButton), new PropertyMetadata(null));
-
-
-
-
-
+        public Uri NavUri
+        {
+            get { return (Uri)GetValue(NavUriProperty); }
+            set { SetValue(NavUriProperty, value); }
+        }
 
     }
 }
