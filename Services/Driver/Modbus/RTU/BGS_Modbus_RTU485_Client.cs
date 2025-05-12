@@ -102,6 +102,14 @@ namespace Monitor_Camara.Services.Driver.Modbus.RTU
             public bool[] ?result_input { get; set; }
         }
 
+        public class Return_Write_8DI8DQ()
+        {
+            public bool? result_Status { get; set; }
+            public bool? result_DoWrite { get; set; }
+            public bool[]? value_coils { get; set; }
+            public ushort? result_ReadTimeout { get; set; }
+        }
+
         public class Return_Read_8AI()
         {
             public bool? result_Status { get; set; }
@@ -277,6 +285,61 @@ namespace Monitor_Camara.Services.Driver.Modbus.RTU
                 return;
             }
         }
+        
+        private Return_Write_8DI8DQ Write_8DI8DQ()
+        {
+            try
+            {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                bool result_DoWrite = false;
+                bool[] coils = [false, false, false, false, false, false, false, false];
+                for(int i = 0; i < 8; i++)
+                {
+                    if(GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Get_xDQ(i) == true)
+                    {
+                        coils[i] = true;
+                        result_DoWrite = true;
+                        GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Set_xDQ(i, false);
+                    }
+                    else if(GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Get_xDQ(i) == null || GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Get_xDQ(i) == false)
+                    {
+                        coils[i] = false;
+                    }
+                    else
+                    {
+                        coils[i] = false;
+                    }
+                }
+                stopwatch.Stop();
+                System.Diagnostics.Debug.WriteLine($"Tempo decorrido de set de escrita 8ch: {stopwatch.Elapsed + "-" + stopwatch.ElapsedMilliseconds} ms");
+
+                return new Return_Write_8DI8DQ
+                {
+                    result_Status = true,
+                    result_DoWrite = result_DoWrite,
+                    result_ReadTimeout = (ushort)stopwatch.ElapsedMilliseconds,
+                    value_coils = coils,
+                };
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine($"Erro na Escrita 8ch");
+                return new Return_Write_8DI8DQ
+                {
+                    result_Status = false,
+                    result_DoWrite = false,
+                    result_ReadTimeout = 0,
+                    value_coils = null,
+                };
+            }
+        }
+
+        private void Write_Modbus(Return_Write_8DI8DQ Return_Write_8DI8DQ, byte SlaveId)
+        {
+           //_master.WriteMultipleCoils(SlaveId,)
+        }
+
 
         // Tarefa que roda em background
 
@@ -292,9 +355,11 @@ namespace Monitor_Camara.Services.Driver.Modbus.RTU
                         // Leitura Modbus aqui
 
                         Return_Read_8DI8DQ result_Read_8DI8DQ = Read_8DI8DQ(1);
+                        Return_Write_8DI8DQ result_Write_8DI8DQ = Write_8DI8DQ();
                         Return_Read_8AI result_Read_8AI = Read_8AI(2);
 
                         Set_8DI8DQ(result_Read_8DI8DQ);
+
                         Set_8AI(result_Read_8AI);
                         int Tempo_de_Leitura = (int)result_Read_8DI8DQ.result_ReadTimeout + (int)result_Read_8AI.result_ReadTimeout;
                         await Task.Delay(1000 - Tempo_de_Leitura, token); // Espera 1 segundo de forma
