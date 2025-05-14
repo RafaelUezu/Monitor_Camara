@@ -106,7 +106,7 @@ namespace Monitor_Camara.Services.Driver.Modbus.RTU
         {
             public bool? result_Status { get; set; }
             public bool? result_DoWrite { get; set; }
-            public bool[]? value_coils { get; set; }
+            public bool?[]? value_coils { get; set; }
             public ushort? result_ReadTimeout { get; set; }
         }
 
@@ -293,22 +293,29 @@ namespace Monitor_Camara.Services.Driver.Modbus.RTU
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 bool result_DoWrite = false;
-                bool[] coils = [false, false, false, false, false, false, false, false];
+                bool?[] coils = [null, null, null, null, null, null, null, null];
                 for(int i = 0; i < 8; i++)
                 {
                     if(GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Get_xDQ(i) == true)
                     {
                         coils[i] = true;
                         result_DoWrite = true;
-                        GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Set_xDQ(i, false);
+                        GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Set_xDQ(i, null);
                     }
-                    else if(GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Get_xDQ(i) == null || GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Get_xDQ(i) == false)
+                    else if(GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Get_xDQ(i) == false)
                     {
                         coils[i] = false;
+                        result_DoWrite = true;
+                        GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Set_xDQ(i, null);
+                    }
+                    else if(GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Get_xDQ(i) == null)
+                    {
+                        coils[i] = null;
+                        GVL.Modbus_RTU485.C1_DI8DQ8.DQ.Write.Set_xDQ(i, null);
                     }
                     else
                     {
-                        coils[i] = false;
+                        coils[i] = null;
                     }
                 }
                 stopwatch.Stop();
@@ -337,7 +344,24 @@ namespace Monitor_Camara.Services.Driver.Modbus.RTU
 
         private void Write_Modbus(Return_Write_8DI8DQ Return_Write_8DI8DQ, byte SlaveId)
         {
-           //_master.WriteMultipleCoils(SlaveId,)
+            try
+            {
+                if (Return_Write_8DI8DQ != null && Return_Write_8DI8DQ.result_Status == true && Return_Write_8DI8DQ.result_DoWrite == true)
+                {
+                    for(int i = 0;  i < 8; i++)
+                    {
+                        if (Return_Write_8DI8DQ.value_coils[i] == true || Return_Write_8DI8DQ.value_coils[i] == false)
+                        {
+                            _master.WriteMultipleCoils(SlaveId, (ushort)i, [(bool)Return_Write_8DI8DQ.value_coils[i]]);
+                            System.Diagnostics.Debug.WriteLine($"Registrador 0x000" + i + " = " + Return_Write_8DI8DQ.value_coils[i] + ": SlaveId: " + SlaveId);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return;
+            }
         }
 
 
@@ -359,7 +383,7 @@ namespace Monitor_Camara.Services.Driver.Modbus.RTU
                         Return_Read_8AI result_Read_8AI = Read_8AI(2);
 
                         Set_8DI8DQ(result_Read_8DI8DQ);
-
+                        Write_Modbus(result_Write_8DI8DQ,1);
                         Set_8AI(result_Read_8AI);
                         int Tempo_de_Leitura = (int)result_Read_8DI8DQ.result_ReadTimeout + (int)result_Read_8AI.result_ReadTimeout;
                         await Task.Delay(1000 - Tempo_de_Leitura, token); // Espera 1 segundo de forma
