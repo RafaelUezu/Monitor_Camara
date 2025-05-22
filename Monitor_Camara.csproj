@@ -41,7 +41,6 @@
     <Folder Include="Utilities\Conversores\" />
     <Folder Include="ViewModel\" />
     <Folder Include="View\UserControls\" />
-    <Folder Include="View\Pages\" />
     <Folder Include="View\Windows\" />
   </ItemGroup>
 

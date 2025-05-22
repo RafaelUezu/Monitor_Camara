@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.IO.Ports;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Monitor_Camara.Commands.Controls;
 
 namespace Monitor_Camara
 {
@@ -23,7 +24,7 @@ namespace Monitor_Camara
 
 
 
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
 
         public MainWindow()
@@ -32,45 +33,8 @@ namespace Monitor_Camara
             InitializeComponent();
         }
 
-        private string boundText = String.Empty;
-        private string boundText2 = String.Empty;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-         
-
-        public string BoundText
-        {
-            get { return boundText; }
-            set
-            {
-                boundText = value;
-                OnPropertyChanged();
-            } 
-        }
-
-        public string BoundText2
-        {
-            get { return boundText2; }
-            set
-            {
-                boundText2 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private void btnSet_Click(object sender, RoutedEventArgs e)
-        {
-            BoundText = "Testarone";
-            BoundText2 = "LALALAL";
-        }
-        private void OnPropertyChanged( [CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        
 
     }
 }
