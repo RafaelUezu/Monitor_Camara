@@ -18,9 +18,7 @@ namespace Monitor_Camara
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
             _cts = new CancellationTokenSource();
-
             // Inicia as tarefas de A e B
             _task_BGS_Modbus_RTU485_Client = Task.Run(() => new BGS_Modbus_RTU485_Client("COM5",9600,Parity.None,StopBits.One,500,500).Start(_cts.Token));
         }
@@ -36,11 +34,8 @@ namespace Monitor_Camara
             {
                 // Cancelamento esperado, sem problemas
             }
-
             _cts.Dispose();
-
             base.OnExit(e);
         }
     }
-
 }
