@@ -9,6 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\customer_page.png" />
+    <None Remove="Resources\Images\home_page.png" />
+    <None Remove="Resources\Images\img_customer.png" />
+    <None Remove="Resources\Images\img_home.png" />
+    <None Remove="Resources\Images\img_order.png" />
+    <None Remove="Resources\Images\img_product.png" />
+    <None Remove="Resources\Images\img_setting.png" />
+    <None Remove="Resources\Images\img_shipment.png" />
+    <None Remove="Resources\Images\img_transaction.png" />
+    <None Remove="Resources\Images\order_page.png" />
+    <None Remove="Resources\Images\product_page.png" />
+    <None Remove="Resources\Images\setting_page.png" />
+    <None Remove="Resources\Images\shipment_page.png" />
+    <None Remove="Resources\Images\shutdown_def.png" />
+    <None Remove="Resources\Images\shutdown_mo.png" />
+    <None Remove="Resources\Images\transaction_page.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NModbus4" Version="2.1.0" />
@@ -24,6 +43,57 @@
     <Folder Include="View\UserControls\" />
     <Folder Include="View\Pages\" />
     <Folder Include="View\Windows\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\customer_page.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\home_page.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\img_customer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\img_home.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\img_order.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\img_product.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\img_setting.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\img_shipment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\img_transaction.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\order_page.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\product_page.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\setting_page.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\shipment_page.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\shutdown_def.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\shutdown_mo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\transaction_page.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

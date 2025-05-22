@@ -385,6 +385,7 @@ namespace Monitor_Camara.Services.Driver.Modbus.RTU
                         Set_8DI8DQ(result_Read_8DI8DQ);
                         Write_Modbus(result_Write_8DI8DQ,1);
                         Set_8AI(result_Read_8AI);
+
                         int Tempo_de_Leitura = (int)result_Read_8DI8DQ.result_ReadTimeout + (int)result_Read_8AI.result_ReadTimeout;
                         await Task.Delay(1000 - Tempo_de_Leitura, token); // Espera 1 segundo de forma
                         System.Diagnostics.Debug.WriteLine("Sucesso na leitura, escrita, atribuição ou normalização de BGS_Modbus_RTU485_Client: " + Tempo_de_Leitura);

@@ -14,13 +14,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Monitor_Camara.Commands
+namespace Monitor_Camara.Commands.Controls
 {
     public class NavButton : ButtonBase
     {
         static NavButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NavButton), new FrameworkPropertyMetadata(typeof(NavButton)));
+
         }
 
         public static readonly DependencyProperty ImageSourceProperty   = DependencyProperty.Register("ImageSource",    typeof(ImageSource),    typeof(NavButton),  new PropertyMetadata(null));
@@ -32,18 +33,15 @@ namespace Monitor_Camara.Commands
             get { return (ImageSource)GetValue(ImageSourceProperty); }
             set { SetValue(ImageSourceProperty, value); }
         }
-
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
-
         public Uri NavUri
         {
             get { return (Uri)GetValue(NavUriProperty); }
             set { SetValue(NavUriProperty, value); }
         }
-
     }
 }
