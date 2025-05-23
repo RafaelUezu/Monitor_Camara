@@ -1,6 +1,8 @@
-﻿using Modbus.Device;
-using Monitor_Camara.Services.Driver.Modbus.RTU;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,26 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO.Ports;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Monitor_Camara.Commands.Controls;
 
-namespace Monitor_Camara
+namespace Monitor_Camara.View.Pages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interação lógica para Header.xam
     /// </summary>
-    /// 
-
-    public partial class MainWindow : Window
+    public partial class Header : Page
     {
-        public MainWindow()
+        public Header()
         {
-            
             InitializeComponent();
         }
-
- 
     }
 }

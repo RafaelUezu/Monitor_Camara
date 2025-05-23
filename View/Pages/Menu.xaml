@@ -1,0 +1,21 @@
+﻿<Page x:Class="Monitor_Camara.View.Pages.Menu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Monitor_Camara.View.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="100"
+      Title="Menu"
+      xmlns:n="clr-namespace:Monitor_Camara.Commands.Controls"
+      >
+
+    <Grid>
+        <Rectangle HorizontalAlignment="Left" Height="100" Margin="10,272,0,0" Stroke="Black" VerticalAlignment="Top" Width="40" Fill="#FFAB4F4F"/>
+
+       <WrapPanel ButtonBase.Click="Grid_Click">
+           <n:NavButton Text="Home" ImageSource="/Resources/Images/img_home.png" NavUri="/View/Pages/Accounts.xaml" Width="88" Height="83"/>
+       </WrapPanel>
+
+    </Grid>
+</Page>

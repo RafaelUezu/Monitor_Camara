@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="600"
-        Width="850"
+        Height="700"
+        Width="1300"
         xmlns:n="clr-namespace:Monitor_Camara.Commands.Controls"
         >
 
 
     <Grid>
-        <Frame Source="View/Pages/Landing.xaml" NavigationUIVisibility="Hidden"/>
+        <Frame x:Name ="Frame_Menu"         Source="View/Pages/Menu.xaml"       NavigationUIVisibility="Hidden"     Margin="0,0,1200,0"/>
+        <Frame x:Name= "Frame_Header"       Source="View/Pages/Header.xaml"     NavigationUIVisibility="Hidden"     Height="100" Width="1200" Margin="100,0,0,584"/>
+        <Frame x:Name ="Frame_Main"         Source="View/Pages/Landing.xaml"    NavigationUIVisibility="Hidden"     Margin="100,100,0,0"/>
     </Grid>
 
     
